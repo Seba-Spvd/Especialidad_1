@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Listar Órdenes de Compra</title>
+</head>
+<body>
+    <h1>Listar Órdenes de Compra</h1>
+    <ul>
+        {% for orden in ordenes %}
+        <li>
+            <a href="{% url 'ver_orden_compra' orden_id=orden.id %}">Orden de compra {{ orden.id }}</a> - Proveedor: {{ orden.proveedor }}
+        </li>
+        {% empty %}
+        <li>No hay órdenes de compra.</li>
+        {% endfor %}
+    </ul>
+    <br>
+    <a href="{% url 'crear_orden_compra' %}">Crear Orden de Compra</a>
+</body>
+</html>

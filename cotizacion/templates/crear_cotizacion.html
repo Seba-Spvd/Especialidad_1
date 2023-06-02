@@ -1,0 +1,36 @@
+{% extends "administrator/index_main.html" %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crear Cotizacion</title>
+</head>
+<body>
+    <h1>Cotizacion</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="cliente">Cliente:</label>
+        <select name="cliente" required>
+            {% for cliente in clientes %}
+            <option value="{{ cliente.id }}">{{ cliente.nombre1 }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <label for="producto">Producto:</label>
+        <select name="producto" required>
+            {% for producto in productos %}
+            <option value="{{ producto.id }}">{{ producto.nombre }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" name="cantidad" value="1" required>
+        <br><br>
+        <label for="descripcion">Descripción:</label>
+        <textarea name="descripcion" required></textarea>
+        <input type="submit" value="Crear Cotizacion">
+    </form>
+</body>
+</html>
+{% endblock %}

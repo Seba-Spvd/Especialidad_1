@@ -1,0 +1,76 @@
+{% extends "administrator/index_main.html" %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Listar Cotizaciones</title>
+</head>
+<body>
+    <h1>Listar Cotizaciones</h1>
+    <form method="GET" action="{% url 'listar_cotizacion' %}">
+        <div class="search-container">
+          <div style="display: flex; align-items: center;">
+            <input type="text" class="search-input custom-width form-control" placeholder="Buscar por nombre..." name="buscar" value="{{ buscar }}">
+            <button class="search-button btn" type="submit">
+              <i class="fas fa-search"></i> Buscar
+            </button>
+          </div>
+        </div>
+      </form>
+    
+    <form action="{% url 'generar_reporte_cotizaciones' %}" method="get">
+        <div class="search-container">
+            <div style="display: flex; align-items: center;">
+                <input type="text" class="search-input custom-width form-control" placeholder="Buscar por ID..." name="filtro_id" value="{{ filtro_id }}">
+                <button class="search-button btn" type="submit">
+                    <i class="fas fa-file-pdf"></i> Generar informe
+                </button>
+            </div>
+        </div>
+    </form>
+    
+    <table class="table table-striped table-hover">
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+        </tr>
+        {% for orden in ordenes %}
+        <tr>
+            <td><a href="{% url 'ver_cotizacion' orden_id=orden.id %}">Cotización {{ orden.id }}</a></td>
+            <td>{{ orden.cliente }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="2">No hay Cotizaciones.</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="{% url 'crear_cotizacion' %}">Crear Cotización</a>
+    <a href="{% url 'generar_reporte_cotizaciones' %}" target="_blank">Generar Reporte Completo</a>
+</body>
+</html>
+<script src="https://kit.fontawesome.com/b408879b64.js" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.querySelector('.search-input');
+        const clearButton = document.querySelector('.clear-button');
+
+        if (searchInput.value === "None") {
+            searchInput.value = "";
+        }
+
+        searchInput.addEventListener('input', function () {
+            clearButton.style.display = this.value ? 'block' : 'none';
+        });
+
+        clearButton.addEventListener('click', function () {
+            searchInput.value = '';
+            clearButton.style.display = 'none';
+            // Aquí redirige al mismo listado sin parámetros de búsqueda para mostrar todos los productos nuevamente
+            window.location.href = "{% url 'listar_cotizacion' %}";
+        });
+    });
+</script>
+{% endblock %}
