@@ -49,6 +49,12 @@ INSTALLED_APPS = [
     'core',
     'ejemplos',
     'gestioncliente',
+    'ordencompra',
+    'prov',
+    'product',
+    'categoria',
+    'ventas',
+    'cotizacion',
 ]
 
 MIDDLEWARE = [
@@ -89,7 +95,7 @@ DATABASES = {
     'default': {
         'HOST': 'localhost',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'num22',
+        'NAME': 'num18',
         'USER': 'postgres',
         'PASSWORD': 'hugo2022',
         'DATABASE_PORT': '5432',
@@ -128,14 +134,23 @@ USE_L10N = True
 
 USE_TZ = True
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'especialidadch@gmail.com'  # Tu dirección de correo electrónico
+EMAIL_HOST_PASSWORD = 'mfkxqrjqzxjtialc'  # Tu contraseña de correo electrónico
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS =(os.path.join(BASE_DIR, 'static'),)
+STATICFILES_DIRS =(os.path.join(BASE_DIR,'administrator/static', 'static'),)
 #media files
-STATIC_ROOT = '/core/static/'
+STATIC_ROOT = '/administrator/static/'
 #media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'core', 'static', 'core')

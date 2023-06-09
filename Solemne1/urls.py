@@ -24,6 +24,22 @@ from gestioncliente.urls import gestioncliente_urlpatterns
 
 urlpatterns = [
     path('',include(core_urlpatterns)),
+]
+from ordencompra.urls import ordencompra_urlpatterns
+from prov.urls import prov_urlpatterns
+from categoria.urls import categoria_urlpatterns
+from product.urls import product_urlpatterns
+from ventas.urls import ventas_urlpatterns
+from cotizacion.urls import cotizacion_urlpatterns
+
+urlpatterns = [
+    path('',include(core_urlpatterns)),
+    path('ventas/',include(ventas_urlpatterns)),
+    path('categoria/',include(categoria_urlpatterns)),
+    path('product/',include(product_urlpatterns)),
+    path('cotizacion/',include(cotizacion_urlpatterns)),
+    path('prov/',include(prov_urlpatterns)),
+    path('ordencompra/',include(ordencompra_urlpatterns)),
     path('gestioncliente/',include(gestioncliente_urlpatterns)),
     path('ejemplos/',include(ejemplos_urlpatterns)),
     path("administrator/",include(administrator_patterns)),
