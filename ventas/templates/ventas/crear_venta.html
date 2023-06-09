@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crear Venta</title>
+</head>
+<body>
+    <h1>Crear Venta</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="cliente">Cliente:</label>
+        <select name="cliente" required>
+            {% for cliente in clientes %}
+                <option value="{{ cliente.id }}">{{ cliente.nombre1 }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <label for="producto">Producto:</label>
+        <select name="producto" required>
+            {% for producto in productos %}
+                <option value="{{ producto.id }}">{{ producto.nombre }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        {% for producto in productos %}
+            <div id="producto_{{ producto.id }}" style="display: none;">
+                <label for="cantidad_{{ producto.id }}">Cantidad:</label>
+                <input type="number" name="cantidad_{{ producto.id }}" min="0" max="{{ producto.stock }}" value="0">
+                <br><br>
+            </div>
+        {% endfor %}
+        <input type="submit" value="Crear Venta">
+    </form>
+
+    <script>
+        const selectProducto = document.querySelector('select[name="producto"]');
+        const productoDivs = document.querySelectorAll('div[id^="producto_"]');
+
+        selectProducto.addEventListener('change', () => {
+            const selectedProductoId = selectProducto.value;
+
+            for (const div of productoDivs) {
+                const productoId = div.id.split('_')[1];
+
+                if (productoId === selectedProductoId) {
+                    div.style.display = 'block';
+                } else {
+                    div.style.display = 'none';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
