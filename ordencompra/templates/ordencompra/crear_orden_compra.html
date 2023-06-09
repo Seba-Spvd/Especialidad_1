@@ -1,0 +1,70 @@
+{% extends "administrator/index_main.html" %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crear Orden de Compra</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #cfe9ff; 
+        }
+
+        .form-container {
+            width: 400px;
+            background-color: white;
+            padding: 20px;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .form-container select,
+        .form-container input[type="number"] {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .form-container input[type="submit"] {
+            width: auto;
+            margin-left: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Crear Orden de Compra</h1>
+        <form method="post">
+            {% csrf_token %}
+            <label for="proveedor">Proveedor:</label>
+            <select name="proveedor" required>
+                {% for proveedor in proveedores %}
+                <option value="{{ proveedor.id }}">{{ proveedor.nombre }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <label for="producto">Producto:</label>
+            <select name="producto" required>
+                {% for producto in productos %}
+                <option value="{{ producto.id }}">{{ producto.nombre }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" name="cantidad" value="1" required>
+            <br>
+            <input type="submit" value="Crear Orden de Compra">
+        </form>
+    </div>
+</body>
+</html>
+{% endblock %}
