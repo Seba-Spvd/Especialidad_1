@@ -1,0 +1,151 @@
+{% extends "administrator/index_main.html" %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Listar Cotizaciones</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .title {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .search-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            margin-bottom: 0.5rem;
+            width: 100%;
+        }
+
+        .table {
+            margin-top: 1rem;
+        }
+
+        .table th,
+        .table td {
+            padding: 0.5rem;
+        }
+
+        .table th {
+            text-align: left;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .button-container {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .purple-button {
+            background-color: purple;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Listar Cotizaciones</h1>
+        
+        <form method="GET" action="{% url 'listar_cotizacion' %}" class="search-container">
+            <input type="text" class="search-input form-control" placeholder="Buscar por nombre..." name="buscar" value="{{ buscar }}">
+            <button class="search-button btn btn-primary" type="submit">
+                <i class="fas fa-search"></i> Buscar
+            </button>
+        </form>
+    
+        <form action="{% url 'generar_reporte_cotizaciones' %}" method="get" class="search-container">
+            <input type="text" class="search-input form-control" placeholder="Buscar por ID..." name="filtro_id" value="{{ filtro_id }}">
+            <button class="search-button btn btn-primary" type="submit">
+                <i class="fas fa-file-pdf"></i> Generar informe
+            </button>
+        </form>
+        
+        <form method="POST" action="{% url 'enviar_correo_cotizacion'%}" class="search-container">
+            {% csrf_token %}
+            <label for="filtro_id">ID de Cotización:</label>
+            <input type="number" id="filtro_id" name="filtro_id" required class="form-control">
+            <button type="submit" class="btn btn-primary">Enviar Correo</button>
+        </form>
+
+        <table class="table table-striped table-hover">
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+            </tr>
+            {% for orden in ordenes %}
+            <tr>
+                <td><a href="{% url 'ver_cotizacion' orden_id=orden.id %}" class="btn btn-link">Cotización {{ orden.id }}</a></td>
+                <td>{{ orden.cliente }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">No hay Cotizaciones.</td>
+            </tr>
+            {% endfor %}
+        </table>
+        
+        <div class="button-container">
+            <a href="{% url 'crear_cotizacion' %}" class="btn btn-primary">Crear Cotización</a>
+            <a href="{% url 'generar_reporte_cotizaciones' %}" target="_blank" class="btn purple-button">Generar Reporte Completo</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/b408879b64.js" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.querySelector('.search-input');
+            const clearButton = document.querySelector('.clear-button');
+
+            if (searchInput.value === "None") {
+                searchInput.value = "";
+            }
+
+            searchInput.addEventListener('input', function () {
+                clearButton.style.display = this.value ? 'block' : 'none';
+            });
+
+            clearButton.addEventListener('click', function () {
+                searchInput.value = '';
+                clearButton.style.display = 'none';
+                window.location.href = "{% url 'listar_cotizacion' %}";
+            });
+        });
+    </script>
+      {% if messages %}
+      {% for me in messages %}
+  
+      <script>
+          Swal.fire({
+              "title": "ATENCION",
+              "text": "{{me}}",
+              "icon": "success",
+          })
+      </script>
+      {% endfor %}
+      {% endif %}
+</body>
+</html>
+
+{% endblock %}

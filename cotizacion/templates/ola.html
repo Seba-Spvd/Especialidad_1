@@ -1,0 +1,66 @@
+{% extends "administrator/index_main.html" %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agregar Item</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        table {
+            width: 400px;
+        }
+        th, td {
+            padding: 10px;
+        }
+        .btn-volver {
+            background-color: purple;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Agregar Item</h1>
+        <table>
+            <form method="post">
+                {% csrf_token %}
+                <tr>
+                    <td><label for="producto">Producto:</label></td>
+                    <td>
+                        <select class="form-control" name="producto" required>
+                            {% for producto in productos %}
+                            <option value="{{ producto.id }}">{{ producto.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="cantidad">Cantidad:</label></td>
+                    <td><input class="form-control" type="number" name="cantidad" value="1" required></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <input class="btn btn-primary" type="submit" value="Agregar Item">
+                    </td>
+                </tr>
+            </form>
+        </table>
+        <br>
+        <a href="{% url 'ver_cotizacion' orden_id=orden.id %}" class="btn btn-volver">Volver a la Cotización</a>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+{% endblock %}
